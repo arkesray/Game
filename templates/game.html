@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+        <title>
+            Game Page
+        </title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Game Area-->
+                <div class="col-8">
+                    <div class="game">
+                        Game goes here
+                        <div class="row" id="game-row-1">
+                            <div class="col-3">1</div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <h5>Player 0 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p0" name="btn-Ready" value="p0">Get Ready</button></h5>
+                                      </div>
+                                      <div id="game-cards-p0">
+
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">3</div>
+                        </div>
+                        <div class="row" id="game-row-2">
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <h5>Player 3 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p3" name="btn-Ready" value="p3">Get Ready</button></h5>
+                                      </div>
+                                      <div id="game-cards-p3">
+
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <h5>Play Area</h5>
+                                      </div>
+                                      <div id="game-cards-server">
+
+                                      </div>
+                                      <div id="game-info">
+
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <h5>Player 1 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p1" name="btn-Ready" value="p1">Get Ready</button></h5>
+                                      </div>
+                                      <div id="game-cards-p1">
+
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="game-row-3">
+                            <div class="col-3">7</div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="card-title">
+                                        <h5>Player 2 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p2" name="btn-Ready" value="p2">Get Ready</button></h5>
+                                      </div>
+                                      <div id="game-cards-p2">
+
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">9</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Area-->
+                <div class="col">
+                    <div class="chat">
+                        <div id="chat-header" >
+                            <p class="text-center font-weight-bold"> Chat Box </p>
+                        </div>
+
+                        <div id="messages">
+                            {% for msg in chat_history %}
+                            <p class="font-italic">{{msg[0]}} : {{msg[1]}}</p>
+                            {% endfor %}
+                        </div>
+    
+                        <div class="input-group mb-3" id="input-area">
+                            <input type="text" id="msg" class="form-control" placeholder="Type text here..." aria-describedby="send-button">
+                            <div class="input-group-append">
+                              <button class="btn btn-secondary" type="button" id="send-button">Send</button>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+
+              </div>
+            
+    
+        </div>
+
+        <!-- SocketIO JS -->
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/socket.io.js')}}">
+        </script>
+
+        <!-- Custom SocketIO JS-->
+        <script>
+          var key = "{{secret_key}}"
+          var pid = "{{pid}}"
+        </script>
+        <script src="{{url_for('static', filename='scripts/script.js')}}">
+        </script>
+    </body>
+</html>
