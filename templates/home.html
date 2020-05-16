@@ -17,12 +17,71 @@
 				</div>
             </div>
             <div class="form-group">        
-                {% for p in offline_players %}
-                <button type="submit" class="btn btn-primary" name="submit-btn" value="{{ p.id }}">Join as Player {{p.id}}</button>
-                {% endfor %}
+                <button type="submit" class="btn btn-primary" name="submit-btn" id="p0" value="0">Join as Player 0</button>
+                <button type="submit" class="btn btn-primary" name="submit-btn" id="p1" value="1">Join as Player 1</button>
+                <button type="submit" class="btn btn-primary" name="submit-btn" id="p2" value="2">Join as Player 2</button>
+                <button type="submit" class="btn btn-primary" name="submit-btn" id="p3" value="3">Join as Player 3</button>
+			</div>
+        
+        <br>
+        <br>
+        <p>
+            <h4>Please Note</h4>
+            This Website is made for a learning Purpose. The game along with the architecture is under development.<br>
+            This is not a deployment version and might contain bugs. If you find any report me. :) <br>
+            <h4>Know Issues</h4>
+            The Game must be reset after a player gets disconnected.(Automatic)<br>
+            Do not reload the pages in between, unnecessarily. It will break the game+server.<br>
+            Also please dont hack the game.
+        </p>
+        <p>
+            {{Reports}}
+        </p>
+        
+			<div class="form-group">
+				<strong><label for="inputUsername" class="control-label">Report Here</label></strong>
+				<div>
+					<input type="text" class="form-control" id="issueBox" placeholder="Enter Name(top) and then submit" name="issueBox">
+				</div>
+            </div>
+            <div class="form-group">        
+                <button type="submit" class="btn btn-primary" name="submit-btn" id="issueBox-btn" value="50" >Report</button>
 			</div>
         </form>
+        <p>
+            <h4>Plans</h4>
+            Add Guest user<br>Add more instance of Game<br>Update CSS (mobile view)<br>Animations
+            <h6>Game Logic</h6>
+            Target UNO<br>
+        </p>
+        <!-- SocketIO JS -->
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/socket.io.js')}}"></script>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+            var socket = io('/home');
+            socket.on('connect', () => {
+                console.log("I am in Home Page");
+                socket.emit("update", {"info" : "HomePage"});
+            });
+            socket.on('request_update', () => {
+                socket.emit("update", {"info" : "HomePage"});
+            });
+            socket.on('update', data => {
+                for(var i=0; i<4; i++) {
+                    if (data[i] === "online") {
+                        document.getElementById("p"+i.toString()).disabled = true;
+                        document.getElementById("p"+i.toString()).innerHTML = "Player " + i.toString() + " Already Joined!";
+                    }
+                    else {
+                        document.getElementById("p"+i.toString()).disabled = false;
+                        document.getElementById("p"+i.toString()).innerHTML = "Join as Player " + i.toString();
+                    }
+                }
+            });
+
+        });
+        </script>
 
     </body>
 </html>

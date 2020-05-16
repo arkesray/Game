@@ -14,14 +14,21 @@
                 <!-- Game Area-->
                 <div class="col-8">
                     <div class="game">
-                        Game goes here
+                        Game goes here. :
+                        Cards are in form of clickable buttons. Once played they are disabled. 
+                        Cards repr [suit_letter]<br>
+                        Game Rules : Suit doesnt matter. First player to play highest value card wins.<br>
+                        card values : 2,3,4,....10,J,Q,K,A (ascending order)
                         <div class="row" id="game-row-1">
                             <div class="col-3">1</div>
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-body">
                                       <div class="card-title">
-                                        <h5>Player 0 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p0" name="btn-Ready" value="p0">Get Ready</button></h5>
+                                        <h5>Player 0 
+                                          <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p0" name="btn-Ready" value="p0">Get Ready</button>
+                                          <button type="button" class="btn btn-primary btn-sm" id="btn-Score-p0" name="btn-Score" value="p0">0</button>
+                                        </h5>
                                       </div>
                                       <div id="game-cards-p0">
 
@@ -36,7 +43,10 @@
                                 <div class="card">
                                     <div class="card-body">
                                       <div class="card-title">
-                                        <h5>Player 3 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p3" name="btn-Ready" value="p3">Get Ready</button></h5>
+                                        <h5>Player 3 
+                                          <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p3" name="btn-Ready" value="p3">Get Ready</button>
+                                          <button type="button" class="btn btn-primary btn-sm" id="btn-Score-p3" name="btn-Score" value="p3">0</button>
+                                        </h5>
                                       </div>
                                       <div id="game-cards-p3">
 
@@ -56,6 +66,9 @@
                                       <div id="game-info">
 
                                       </div>
+                                      <div id="game-score">
+                                        
+                                      </div>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +76,10 @@
                                 <div class="card">
                                     <div class="card-body">
                                       <div class="card-title">
-                                        <h5>Player 1 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p1" name="btn-Ready" value="p1">Get Ready</button></h5>
+                                        <h5>Player 1 
+                                          <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p1" name="btn-Ready" value="p1">Get Ready</button>
+                                          <button type="button" class="btn btn-primary btn-sm" id="btn-Score-p1" name="btn-Score" value="p1">0</button>
+                                        </h5>
                                       </div>
                                       <div id="game-cards-p1">
 
@@ -78,7 +94,10 @@
                                 <div class="card">
                                     <div class="card-body">
                                       <div class="card-title">
-                                        <h5>Player 2 <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p2" name="btn-Ready" value="p2">Get Ready</button></h5>
+                                        <h5>Player 2 
+                                          <button type="button" class="btn btn-warning btn-sm" id="btn-Ready-p2" name="btn-Ready" value="p2">Get Ready</button>
+                                          <button type="button" class="btn btn-primary btn-sm" id="btn-Score-p2" name="btn-Score" value="p2">0</button>
+                                        </h5>
                                       </div>
                                       <div id="game-cards-p2">
 
@@ -87,33 +106,39 @@
                                 </div>
                             </div>
                             <div class="col-3">9</div>
-                        </div>
+                      </div>
                     </div>
+                    <form action="{{ url_for('game')}}" method="post">
+                      <div class="form-group">         
+                        <button type="submit" class="btn btn-danger" id="disconnect-btn" name="disconnect-btn" >Disconnect</button>
+                      </div>
+                    </form>
+                    <button type="button" id="reset" name="reset">Reset</button>
                 </div>
-
+                
                 <!-- Chat Area-->
                 <div class="col">
-                    <div class="chat">
-                        <div id="chat-header" >
-                            <p class="text-center font-weight-bold"> Chat Box </p>
-                        </div>
-
-                        <div id="messages">
-                            {% for msg in chat_history %}
-                            <p class="font-italic">{{msg[0]}} : {{msg[1]}}</p>
-                            {% endfor %}
-                        </div>
-    
-                        <div class="input-group mb-3" id="input-area">
-                            <input type="text" id="msg" class="form-control" placeholder="Type text here..." aria-describedby="send-button">
-                            <div class="input-group-append">
-                              <button class="btn btn-secondary" type="button" id="send-button">Send</button>
-                            </div>
-                          </div>
+                  <div class="chat">
+                    <div id="chat-header" >
+                        <p class="text-center font-weight-bold"> Chat Box </p>
                     </div>
-                </div>
 
-              </div>
+                    <div id="messages">
+                        {% for msg in chat_history %}
+                        <p class="font-italic">{{msg[0]}} : {{msg[1]}}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="input-group mb-3" id="input-area">
+                      <input type="text" id="msg" class="form-control" placeholder="Type text here..." aria-describedby="send-button">
+                      <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" id="send-button">Send</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+            </div>
             
     
         </div>

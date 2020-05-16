@@ -17,6 +17,9 @@ function sendMsg() {
         socket.emit('inputMsg', msg);
     }
 }
+function resetGame() {
+    socket.emit('reset', "Reset Request");
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     socket = io();
@@ -39,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById("msg").addEventListener("keypress", sendMsgEnter);
     document.getElementById("send-button").addEventListener("click", sendMsg);
+    document.getElementById("reset").addEventListener("click", resetGame);
 
     var readyButtons = document.getElementsByName("btn-Ready");
     var pb; //player-button (for ready)
@@ -69,6 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
     })
+    socket.on('player_not_ready', data => {
+        console.log(data + " is ready ack by server!");
+        readyButtons.forEach(item => {
+            if (item.value === data) {
+                item.disabled = false;
+                item.classList.remove('btn-success');
+                item.innerHTML = "Get Ready";
+                item.classList.add('btn-warning');
+            }
+        })
+    })
 
     socket.on('game_action', data => {
         if(data["action"] === "cards_served") {
@@ -77,7 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(data["action"] === "cards_fetch") {
             cards = data["cards"];
+            document.querySelector("#game-score").innerHTML = ""
+            document.querySelector("#game-info").innerHTML = "";
             document.querySelector("#game-cards-" + pb.value).innerHTML = "";
+            document.querySelector("#game-cards-server").innerHTML = "";
             for(var i=0; i<=12; i++) {
                 const btn = document.createElement('button');
                 btn.id = i;
@@ -85,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.name = pb.value + "-card";
                 btn.innerHTML = cards[i][0][0] + "_" + cards[i][1];
                 document.querySelector("#game-cards-" + pb.value).append(btn);
-                
             }
             pcs = document.getElementsByName(pb.value + "-card");
             console.log(pcs);
@@ -106,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(data["action"] === "update_table") {
             console.log(data);
+            document.querySelector("#game-info").innerHTML = "";
             const btn = document.createElement('button');
             btn.id = data["player"];
             btn.value = data["card"][0] + "_" + data["card"][1];
@@ -115,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(data["action"] === "clear_table") {
             console.log(data);
+            document.querySelector("#game-info").innerHTML = "Player " + data["winner"] + "'s turn next! <br>";
             var gcs = document.querySelector("#game-cards-server");
             for(var i=0; i<4; i++) {
                 gcs.removeChild(gcs.firstElementChild);
@@ -124,6 +143,39 @@ document.addEventListener('DOMContentLoaded', () => {
         else if(data["action"] === "show_score") {
             console.log(data);
             document.querySelector("#game-info").innerHTML = "Game Over!!</br>";
+            readyButtons.forEach(item => {
+                item.disabled = false;
+                item.classList.remove('btn-success');
+                item.innerHTML = "Get Ready";
+                item.classList.add('btn-warning');
+            })
+            score = data["score"];
+            for (var i=0; i<4; i++) {
+                var player_round_wins = score[i];
+                const div = document.createElement('div');
+                div.id = "p" + i.toString();
+
+                const p = document.createElement('p');
+                p.innerHTML = "Player " + i.toString();
+
+                player_round_wins.forEach(item => {
+                    const h6 = document.createElement('h6');
+                    h6.innerHTML = "R" + item[0].toString() + " ";
+                    for(var j=0; j<4; j++) {
+                        h6.innerHTML += item[1][j][0][0] + "_" + item[1][j][1] + "<strong>("+item[1][j][2][1]+")</strong>";
+                    }
+                    p.appendChild(h6);
+                })
+                div.appendChild(p);
+                document.querySelector("#game-score").appendChild(div); 
+            }
+            player_scores = data["player_scores"];
+            for (var i=0; i<4; i++) {
+                document.getElementById("btn-Score-p"+i.toString()).innerHTML = player_scores[i];
+            }
+        }
+        else if(data["action"] === "reload") {
+            document.getElementById("disconnect-btn").click();
         }
     })
 });

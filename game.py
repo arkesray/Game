@@ -84,6 +84,7 @@ class Game():
         self.playerMovesDone = [False, False, False, False]
         self.roundCards = []
         self.roundNumber = 0
+        self.roundScore = {}
 
     def serveCards(self):
         self.roundNumber = 0
@@ -114,8 +115,11 @@ class Game():
                 allmoveDone = False
                 break
         r = {"winner" : None, "next_move" : None, "game_over" : False, "scoreboard" : None}
-        if len(self.roundCards) == 4 and allmoveDone:
+        if allmoveDone:
+            if len(self.roundCards) != 4:
+                print("****---Game Error---****** : please restart")  
             winner = max(self.roundCards, key = lambda x: x[0].value)
+            self.roundScore[self.roundNumber] = [self.roundCards[:], winner[1]]
             self.nextMove = getPlayerById(int(winner[1]), self.players)
             self.roundCards.clear()
             r["winner"] = winner[1]
@@ -124,11 +128,25 @@ class Game():
 
             if self.isGameOver():
                 r["game_over"] = True
-                r["scoreboard"] = None
+                r["scoreboard"] = self.prepare_scoreboard()
                 print("Game Over!", "No Scoreboard")
             else:
                 self.newRound()
         return r
+
+    def prepare_scoreboard(self):
+        if len(self.roundScore.keys()) != 13:
+            print("Something went Wrong")
+        else:
+            w_p = [[],[],[],[]]
+            for k in self.roundScore:
+                round_cards = []
+                for card_player in self.roundScore[k][0]:
+                    round_cards.append([card_player[0].suit, card_player[0].letter, "p"+str(card_player[1])])
+                w_p[int(self.roundScore[k][1])].append([int(k), round_cards])
+                getPlayerById(int(self.roundScore[k][1]), self.players).score += 1
+            return w_p
+
 
     def play(self, pid, suit, cardLetter):
         pid = int(pid)
