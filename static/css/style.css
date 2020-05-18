@@ -3,6 +3,8 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 
 .game {
     background-color:rgb(170, 170, 170);
+    width: 780px;
+    height: 700px;
 }
 
 .row {
@@ -36,11 +38,30 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     opacity: 1;
 }
 #game-row-2 {
-    height: 400px;
+    height: 300px;
 }
 #game-row-1 {
     height: 150px;
 }
 #game-row-3 {
     height: 150px;
+}
+#player-3-card {
+    width: 190px;
+    height: 300px;
+}
+#player-1-card {
+    width: 190px;
+    height: 300px;
+}
+#player-0-card {
+    width: 350px;
+    height: 150px;
+}
+#player-2-card {
+    width: 350px;
+    height: 150px;
+}
+#play-area-card {
+    width: 350px;
 }
